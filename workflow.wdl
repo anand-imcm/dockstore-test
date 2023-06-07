@@ -1,5 +1,9 @@
 version 1.0
 
+## The WDL script performs the following steps to process the SRA data:
+## Download SRA Data: The script uses fasterq-dump to download the SRA data corresponding to the provided run accessions.
+## Quality Trimming: The downloaded FASTQ files are processed using trimmomatic to perform quality trimming and filtering of the reads.
+
 workflow main {
     
     input {

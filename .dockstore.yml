@@ -1,7 +1,7 @@
 version: 1.2
 workflows:
   - subclass: WDL
-    name: two-sample-mr-wdl
+    name: sra-wc-wdl
     primaryDescriptorPath: /workflow.wdl
     readMePath: /README.md
     testParameterFiles: /test/Dockstore.json

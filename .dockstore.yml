@@ -1,0 +1,6 @@
+version: 1.2
+workflows:
+  - subclass: WDL
+    name: two-sample-mr-wdl
+    primaryDescriptorPath: /workflow.wdl
+    readMePath: /README.md

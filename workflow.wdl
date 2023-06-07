@@ -1,5 +1,38 @@
 version 1.0
 
+workflow main {
+    
+    input {
+        Array[String] sra_run_accession
+    }
+    
+    scatter (runID in sra_run_accession) {
+        
+        call download_fastqs {
+            input: run_accession = runID
+        }      
+
+        Int num_fastq = length(download_fastqs.fastqs)
+
+        if (num_fastq == 2) {
+            call trimmomaticPE {
+                input: paired_fastq = download_fastqs.fastqs,
+            }
+        }    
+
+        if (num_fastq == 1) {
+            call trimmomaticSE {
+                input : single_fastq = download_fastqs.fastqs,
+            }
+        }
+    }
+
+    meta {
+        desc: "Takes a list of SRA run accessions and runs fasterq-dump and trimmomatic."
+        author: "Anand Maurya"
+    }
+}
+
 task download_fastqs {
     
     input {
@@ -37,7 +70,7 @@ task trimmomaticPE {
     String AT_R2 = basename(paired_fastq[1], ".fastq")
 
     Int memory_mb = ceil(size(paired_fastq, "MiB")) + 5000
-    Int disk_size_gb = ceil(size(paired_fastq, "GiB")) + 5
+    Int disk_size_gb = ceil(size(paired_fastq, "GiB")) * 2
     
     command {
         echo "PAIRED"
@@ -72,7 +105,7 @@ task trimmomaticSE {
     String AT_SE = basename(single_fastq[0], ".fastq")
 
     Int memory_mb = ceil(size(single_fastq, "MiB")) + 5000
-    Int disk_size_gb = ceil(size(single_fastq, "GiB")) + 5
+    Int disk_size_gb = ceil(size(single_fastq, "GiB")) * 2
     
     command {
         echo "SINGLE"
@@ -96,37 +129,4 @@ task trimmomaticSE {
         disks: "local-disk ~{disk_size_gb} HDD"
     }
 
-}
-
-workflow main {
-    
-    input {
-        Array[String] sra_run_accession
-    }
-    
-    scatter (runID in sra_run_accession) {
-        
-        call download_fastqs {
-            input: run_accession = runID
-        }      
-
-        Int num_fastq = length(download_fastqs.fastqs)
-
-        if (num_fastq == 2) {
-            call trimmomaticPE {
-                input: paired_fastq = download_fastqs.fastqs,
-            }
-        }    
-
-        if (num_fastq == 1) {
-            call trimmomaticSE {
-                input : single_fastq = download_fastqs.fastqs,
-            }
-        }
-    }
-
-    meta {
-        desc: "Takes a list of SRA run accessions and runs fasterq-dump and trimmomatic."
-        author: "Anand Maurya"
-    }
 }

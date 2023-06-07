@@ -1,0 +1,5 @@
+{
+  "main.trimmomaticPE.adapterPE": "./example/adapters/TruSeq3-PE-2.fa",
+  "main.sra_run_accession": ["SRR12548227", "SRR17822879"],
+  "main.trimmomaticSE.adapterSE": "./example/adapters/TruSeq3-SE.fa"
+}

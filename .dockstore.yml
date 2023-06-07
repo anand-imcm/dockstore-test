@@ -4,3 +4,4 @@ workflows:
     name: two-sample-mr-wdl
     primaryDescriptorPath: /workflow.wdl
     readMePath: /README.md
+    testParameterFiles: /test/Dockstore.json

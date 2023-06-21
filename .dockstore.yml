@@ -5,3 +5,6 @@ workflows:
     readMePath: /README.md
     testParameterFiles:
       - test/Dockstore.json
+    authors:
+      - name: Anand Maurya
+        email: anand.maurya@well.oc.ac.uk
